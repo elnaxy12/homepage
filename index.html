@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+<title>Document</title>
+<style>
+    :root {
+        --primary-color: #4B5945;
+        --secondary-color: #CAE8BD;
+        --text-color-light: #f1f1f1;
+    }
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        user-select: none;
+        background: #000; /* background gelap supaya partikel kelihatan */
+        position: relative;
+    }
+
+    canvas {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* supaya klik ke konten tetap jalan */
+        z-index: 0;
+        display: block;
+    }
+
+    .main-container {
+        position: relative;
+        z-index: 10; /* konten di atas canvas */
+        width: 100%;
+        min-height: 100vh;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .main-image {
+        width: 100%;
+        min-height: 100vh;
+        background-image: url('main-page.jpg'); /* koreksi ekstensi dan penulisan */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    .coloumn {
+        width: 100%;
+        min-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .rows {
+        width: 100%;
+        min-height: 15vh;
+        display: flex;
+        flex-direction: row;
+        justify-content: end;
+    }
+
+    .main-content {
+        position: relative;
+        width: 45%;
+        min-height: 40vh;
+        background-image: url('event1.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        z-index: 2;
+    }
+    
+    .overlay {
+        position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3); /* hitam semi-transparan */
+    z-index: 5; /* lebih dari canvas (0), tapi kurang dari konten (10) */
+    pointer-events: none; /* supaya klik tetap ke konten */
+    z-index: 1;
+    }
+
+    .card {
+        border: 1px solid var(--primary-color);
+        padding: 5px 10px;
+        color: white;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+
+    .close-btn {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #4B5945;
+    cursor: pointer;
+    }
+
+    .close-btn:hover {
+    color: red;
+    }
+
+    a {
+        text-decoration: none;
+        font-size: 15px;
+        color: white;
+        padding: 15px 30px;
+        background-color: var(--primary-color);
+        border-radius: 50px;
+        transition: background-color 0.3s ease;
+        z-index: 2;
+    }
+
+    a:hover {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+    p {
+        font-size: 10px;
+    }
+
+    h4 {
+        font-family: 'Open Sans';
+    }
+
+    audio {
+        margin-top: 2pc;
+        transform: scale(0.7);
+    }
+
+    #toggleAudio:checked + .audio {
+        display: none;
+    }
+
+    @media screen and (max-width: 768px) {
+        .main-content {
+            width: 85%;
+            min-height: 20vh;
+            margin: 0;
+        }
+
+        .card {
+            width: 100%;
+            position: absolute;
+            top: 0px;
+            padding: 0;
+            border: none;
+        }
+
+        h3,h4,p {
+            font-size: 0.5rem;
+            margin-left: 12px;
+        }
+
+        a {
+            font-size: 15px;
+        }
+
+        audio {
+            transform: scale(0.5);
+        }
+
+        .rows {
+            justify-content: center;
+        }
+
+        .close-btn {
+            right: 4pc;
+        }
+    }
+
+
+</style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="main-image">
+            <div class="coloumn">
+                <div class="card">
+                    <h4>Kewajiban Menjawab Salam</h4>
+                    <h3>عَنْ عَبْدِ اللَّهِ بْنِ عَمْرٍو رَضِيَ اللَّهُ عَنْهُمَا:</h3>
+                    <h3>"أَنَّ رَجُلًا سَأَلَ النَّبِيَّ ﷺ: أَيُّ الإِسْلاَمِ خَيْرٌ؟ قَالَ: تُطْعِمُ الطَّعَامَ، وَتَقْرَأُ السَّلاَمَ عَلَى مَنْ عَرَفْتَ وَمَنْ لَمْ تَعْرِفْ"</h3>
+                    <p>Artinya:<br>"Seorang laki-laki bertanya kepada Nabi ﷺ,‘Islam yang bagaimana yang paling baik?’ Nabi menjawab, <br>‘Engkau memberi makan dan mengucapkan salam kepada orang yang engkau kenal dan yang tidak engkau kenal.’"<br>(HR. Bukhari no. 12, Muslim no. 39)</p>
+                </div>
+                <div class="overlay"></div>
+                <canvas id="particle-canvas"></canvas>
+                <div class="main-content"></div>
+                <a href="/HTML/WEB/RISMA/index.html">Ahlan Wa Sahlan</a>
+            </div>
+            <div class="rows">
+                <div class="audio">
+                    <button class="close-btn" onclick="this.parentElement.style.display='none'">✕</button>
+                    <audio id="myAudio" autoplay loop controls>
+                        <source src="Riff2.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+      </div>
+  </div>
+
+
+
+
+<script>
+    //particel effect
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.size = Math.random() * 3 + 1;
+            this.speedX = (Math.random() - 0.5) * 0.5;
+            this.speedY = (Math.random() - 0.5) * 0.5;
+            this.color = `rgba(100, 255, 100, ${Math.random() * 0.7 + 0.3})`;
+        }
+
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+
+            if (this.x < 0) this.x = width;
+            else if (this.x > width) this.x = 0;
+            if (this.y < 0) this.y = height;
+            else if (this.y > height) this.y = 0;
+        }
+
+        draw() {
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = 'limegreen';
+            ctx.shadowBlur = 10;
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    const particlesArray = [];
+    const numberOfParticles = 100;
+
+    for(let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push(new Particle());
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particlesArray.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    //nonaktif audio
+    document.querySelector('.close-btn').addEventListener('click', function() {
+        const audio = document.getElementById('myAudio');
+        const audioBox = document.getElementById('audioBox');
+        audio.pause();
+        audio.currentTime = 0;
+        audioBox.style.display = 'none';
+    });
+</script>
+</body>
+</html>
