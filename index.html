@@ -83,8 +83,23 @@
         margin-bottom: 20px;
         border-radius: 10px;
         z-index: 2;
+
+      animation: float 10s infinite ease-in-out;
+
     }
     
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
     .overlay {
         position: fixed;
     top: 0; left: 0;
@@ -97,7 +112,6 @@
     }
 
     .card {
-        border: 1px solid var(--primary-color);
         padding: 5px 10px;
         color: white;
         background-color: rgba(0,0,0,0.5);
@@ -112,6 +126,9 @@
     font-size: 20px;
     color: #4B5945;
     cursor: pointer;
+
+    animation: pulse 10s infinite;    
+
     }
 
     .close-btn:hover {
@@ -127,6 +144,20 @@
         border-radius: 50px;
         transition: background-color 0.3s ease;
         z-index: 2;
+
+      animation: pulse 10s infinite;    
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.9);
+      }
+      50% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(0.9);
+      }
     }
 
     a:hover {
@@ -177,6 +208,7 @@
 
         audio {
             transform: scale(0.5);
+            margin: 0;
         }
 
         .rows {
@@ -204,7 +236,7 @@
                 <div class="overlay"></div>
                 <canvas id="particle-canvas"></canvas>
                 <div class="main-content"></div>
-                <a href="https://elnaxy12.github.io/blog/">Ahlan Wa Sahlan</a>
+                <a href="/HTML/WEB/RISMA/index.html">Ahlan Wa Sahlan</a>
             </div>
             <div class="rows">
                 <div class="audio">
