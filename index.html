@@ -117,24 +117,6 @@
         background-color: rgba(0,0,0,0.5);
     }
 
-
-    .close-btn {
-    position: absolute;
-    right: 12px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    color: #4B5945;
-    cursor: pointer;
-
-    animation: pulse 10s infinite;    
-
-    }
-
-    .close-btn:hover {
-    color: red;
-    }
-
     a {
         text-decoration: none;
         font-size: 15px;
@@ -240,18 +222,14 @@
             </div>
             <div class="rows">
                 <div class="audio">
-                    <button class="close-btn" onclick="this.parentElement.style.display='none'">✕</button>
-                    <audio id="myAudio" autoplay loop controls>
-                        <source src="Riff2.mp3" type="audio/mpeg">
-                    </audio>
+                <audio id="musik">
+                    <source src="Riff2.mp3" type="audio/mpeg">
+                    Browser Anda tidak mendukung elemen audio.
+                </audio>
                 </div>
             </div>
       </div>
   </div>
-
-
-
-
 <script>
     //particel effect
     const canvas = document.getElementById('particle-canvas');
@@ -315,14 +293,11 @@
 
     animate();
 
-    //nonaktif audio
-    document.querySelector('.close-btn').addEventListener('click', function() {
-        const audio = document.getElementById('myAudio');
-        const audioBox = document.getElementById('audioBox');
-        audio.pause();
-        audio.currentTime = 0;
-        audioBox.style.display = 'none';
-    });
+    //audio auto aktif
+    document.addEventListener("click", function () {
+        const audio = document.getElementById("musik");
+        audio.play();
+    }, { once: true });
 </script>
 </body>
 </html>
